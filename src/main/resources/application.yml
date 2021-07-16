@@ -1,0 +1,63 @@
+server:
+  port: 8082
+kafka:
+  consumerGroupId: group_id
+  server: 10.58.71.159:8646
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://10.58.71.159:8636/bccs3_sale_trans_la?zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Ho_Chi_Minh&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false
+    driverClassName: com.mysql.jdbc.Driver
+    username: root
+    password: a456a123a
+    hikari:
+      pool-name: maria-db-pool
+      maximum-pool-size: 10
+      minimum-idle: 5
+      max-lifetime: 600000
+  jpa:
+    #todo false -> true
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDB103Dialect
+        format_sql: true
+eventuate:
+  database:
+    schema: bccs3_sale_trans_la
+mod: 100
+partition: 0
+ws:
+  address:
+    catalog:
+      name: product-catalog-service
+      url: http://10.58.71.159:8610
+security:
+  oauth2:
+    client:
+      clientId: sale_service_client_id
+      clientSecret: bccs3
+      accessTokenUri: http://10.58.71.159:8088/oauth/token
+      grantType: client_credentials
+    resource:
+      id: sale
+      jwt:
+        key-value: -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqMl9i31XriIEHSUIvjQR
+          VCZcngPIrJbK7qtP6XHWr7tFwGCX/eNmYkc8xSktikNZ+/sc5+6geUpX1QkqG+MN
+          zvfBUPIrEPRZUbg0LHFDVGqTWw6zx2aGUKoq9vOplAH4DHN8N9P1YH3/kWzbpLv9
+          YWr3czprAfecSEJo15pnqF7UpB0PyeWY9FKDMCcQWnLeULffCSr21QeA3ki9Ozco
+          srWKiakPeDP9BSUnKELh3AUTSOtcu4UMad63QGQKF3UGEGsHmGM5kMYmfTEs2Il9
+          TJcEJ+S5D/oTacz2AnKGWnWcZrqDaVSTV+ctH6xOaK4iKivI40FSTaZx5L2RkKiX
+          HwIDAQAB
+          -----END PUBLIC KEY-----
+      whitelist: /test/**,/actuator,/kafka/**
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 30000
+        readTimeout: 30000
+        loggerLevel: full
+        errorDecoder: com.viettel.bccs3.config.feign.StashErrorDecoder
+
